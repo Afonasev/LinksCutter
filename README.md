@@ -5,6 +5,6 @@
 
 ## Backend
 
-[Backend](https://github.com/Afonasev/LinksCutter/blob/master/backend/README.txt)
+[Backend](https://github.com/Afonasev/LinksCutter/blob/master/backend/README.md)
 
-[Frontend](https://github.com/Afonasev/LinksCutter/blob/master/frontend/README.txt)
+[Frontend](https://github.com/Afonasev/LinksCutter/blob/master/frontend/README.md)
