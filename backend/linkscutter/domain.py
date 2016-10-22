@@ -17,6 +17,13 @@ class Link:
         self.key = key
         self.created_at = created_at
 
+    @property
+    def full_url(self):
+        url = self.url
+        if not url.startswith('http'):
+            url = 'http://' + url
+        return url
+
 
 class ILinkRepository:
 

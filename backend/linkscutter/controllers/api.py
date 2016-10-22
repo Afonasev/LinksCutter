@@ -1,47 +1,44 @@
-from bottle import redirect, response, request, static_file
+from bottle import get, hook, post, redirect, request, response, static_file
 
-from .. import settings
-from ..application import serialize_link, deserialize_link
-from .wsgi import app
 from . import schemas
+from .services import link_service
+from .. import settings
+from ..application import deserialize_link, serialize_link
 
 
-@app.get(r'/<key:re:[\d\w]+>')
+@get(r'/<key:re:[\d\w]+>')
 def redirect_to_url(key):
-    url = app.link_service.get(key=key).url
-    if not url.startswith('http'):
-        url = 'http://' + url
-    redirect(url)
+    redirect(link_service.get(key=key).full_url)
 
 
-@app.get('/api')
-@app.get('/api/v1')
-def help():
+@get('/api')
+@get('/api/v1')
+def get_schema():
     return schemas.api_v1
 
 
-@app.get('/api/v1/links')
+@get('/api/v1/links')
 def get_links():
-    links_page = app.link_service.find(**request.params)
+    links_page = link_service.find(**dict(request.params))
     links_page['objects'] = [serialize_link(i) for i in links_page['objects']]
     return links_page
 
 
-@app.get('/api/v1/links/<key>')
+@get('/api/v1/links/<key>')
 def get_link(key):
     return serialize_link(
-        app.link_service.get(key=key),
+        link_service.get(key=key),
     )
 
 
-@app.post('/api/v1/links')
+@post('/api/v1/links')
 def add_link():
-    return serialize_link(app.link_service.create(
+    return serialize_link(link_service.create(
         deserialize_link(request.json),
     ))
 
 
-@app.hook('before_request')
+@hook('before_request')
 def strip_path():
     """
     Ignore trailing slashes in routes
@@ -49,7 +46,7 @@ def strip_path():
     request.environ['PATH_INFO'] = request.environ['PATH_INFO'].rstrip('/')
 
 
-@app.hook('after_request')
+@hook('after_request')
 def enable_cors():
     """
     cross-origin resource sharing
@@ -65,10 +62,10 @@ def enable_cors():
 
 if settings.DEBUG:
     # nginx in production
-    @app.get('/')
+    @get('/')
     def index():
         return static_file('index.html', settings.STATIC_PATH)
 
-    @app.get(r'/static/<path:path>')
+    @get(r'/static/<path:path>')
     def static(path):
         return static_file(path, settings.STATIC_PATH)
