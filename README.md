@@ -4,6 +4,7 @@
 
 ## Backend
 [![Coverage Status](https://coveralls.io/repos/github/Afonasev/LinksCutter/badge.svg?branch=master)](https://coveralls.io/github/Afonasev/LinksCutter?branch=master)
+
 Documentation [here](https://github.com/Afonasev/LinksCutter/tree/master/backend)
 
 ## Frontend

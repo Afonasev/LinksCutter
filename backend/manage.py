@@ -3,7 +3,9 @@ import subprocess
 
 import click
 
+from linkscutter.application import LinkRepository  # noqa
 from linkscutter.controllers import wsgi  # noqa
+from linkscutter.utils import fill_fake_links  # noqa
 
 
 @click.group()
@@ -13,8 +15,7 @@ def cli():
 
 @cli.command()
 def runserver():
-    wsgi.init()
-    wsgi.app.run(debug=True, reloader=True)
+    wsgi.init().run(debug=True, reloader=True)
 
 
 @cli.command()
@@ -37,12 +38,9 @@ def migrate():
 
 
 @cli.command()
-@click.option('--count', '-c', default=100, help='Number of users')
-@click.option('--deep', '-d', default=10, help='Max number of items')
-def fill(count, deep):
-    # from faker import Factory
-    # faker = Factory.create()
-    pass
+@click.option('--count', '-c', default=100, help='Number of links')
+def fill(count):
+    fill_fake_links(LinkRepository(), count)
 
 
 if __name__ == '__main__':

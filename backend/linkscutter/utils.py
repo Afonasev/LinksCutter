@@ -3,11 +3,25 @@ import os
 import random
 import string
 
+import faker
+
 from . import settings
+from .domain import Link
 
 
 def random_str(size, chars=string.ascii_letters + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+
+def fill_fake_links(repository, count):
+    factory = faker.Factory.create()
+
+    for _ in range(count):
+        repository.save(Link(
+            url=factory.url(),
+            key=random_str(settings.MIN_KEY_LENGHT),
+            created_at=factory.date_time_this_month(),
+        ))
 
 
 def init_logging(path='./logs'):
