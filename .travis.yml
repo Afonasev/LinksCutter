@@ -4,5 +4,9 @@ language:
 python:
   - "3.5"
 
+node_js:
+  - "6"
+
 script:
   - sh ./backend/scripts/travis.sh
+  - sh ./frontend/scripts/travis.sh
