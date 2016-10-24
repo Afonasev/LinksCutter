@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "mocha -R spec ./tests/*.js",
-    "build": "browserify ./client/main.js > ./build/bundle.js",
+    "build": "mkdir -p build; browserify ./client/main.js > ./build/bundle.js",
     "watch": "nodemon -e js --watch ./client -x \"npm run build\""
   },
   "dependencies": {
