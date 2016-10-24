@@ -1,4 +1,4 @@
-from bottle import get, hook, post, redirect, request, response, static_file
+from bottle import abort, get, post, redirect, request, static_file
 
 from . import schemas
 from .services import link_service
@@ -8,7 +8,10 @@ from ..application import deserialize_link, serialize_link
 
 @get(r'/<key:re:[\d\w]+>')
 def redirect_to_url(key):
-    redirect(link_service.get(key=key).full_url)
+    try:
+        redirect(link_service.get(key=key).full_url)
+    except KeyError:
+        abort(404)
 
 
 @get('/api')
@@ -36,28 +39,6 @@ def add_link():
     return serialize_link(link_service.create(
         deserialize_link(request.json),
     ))
-
-
-@hook('before_request')
-def strip_path():
-    """
-    Ignore trailing slashes in routes
-    """
-    request.environ['PATH_INFO'] = request.environ['PATH_INFO'].rstrip('/')
-
-
-@hook('after_request')
-def enable_cors():
-    """
-    cross-origin resource sharing
-    """
-    response.headers.update({
-        'access-control-allow-origin': '*',
-        'access-control-allow-methods': 'put, get, post, delete, options',
-        'access-control-allow-headers': (
-            'authorization, origin, accept, content-type, x-requested-with',
-        ),
-    })
 
 
 if settings.DEBUG:
