@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from webtest import TestApp, AppError
+from webtest import AppError, TestApp
 
 from linkscutter.domain import Link  # noqa
 from linkscutter.controllers import wsgi, schemas, services  # noqa
