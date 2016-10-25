@@ -9,3 +9,4 @@ Documentation [here](https://github.com/Afonasev/LinksCutter/tree/master/backend
 
 ## Frontend
 Documentation [here](https://github.com/Afonasev/LinksCutter/tree/master/frontend)
+1
