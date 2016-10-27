@@ -22,7 +22,12 @@ def get_schema():
 
 @get('/api/v1/links')
 def get_links():
-    links_page = link_service.find(**dict(request.params))
+    params = dict(request.params)
+    for param in ('page', 'size'):
+        if param in params:
+            params[param] = int(params[param])
+
+    links_page = link_service.find(**params)
     links_page['objects'] = [serialize_link(i) for i in links_page['objects']]
     return links_page
 
