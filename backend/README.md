@@ -1,9 +1,5 @@
-# LinksCutter
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Afonasev/LinksCutter/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Afonasev/LinksCutter.svg?branch=master)](https://travis-ci.org/Afonasev/LinksCutter)
+# LinksCutter - Backend
 [![Coverage Status](https://coveralls.io/repos/github/Afonasev/LinksCutter/badge.svg?branch=master)](https://coveralls.io/github/Afonasev/LinksCutter?branch=master)
-
-## Backend
 
 ### Installing deps
 
@@ -11,22 +7,17 @@
 
 ### Running debug server
 
-    python manage.py run
+    python manage.py runserver
 
 ### Running the testsuite
 
-The minimal requirement for running the testsuite is ``pytest``.  You can
-install it with:
+    py.test --cov=./linkscutter
 
-    pip install pytest
+### Code linting
 
-Then you can run the testsuite with:
+    flake8
+    pylint linkscutter
 
-    py.test
+### Code Style
 
-## Frontend
-
-### Installing deps
-
-    cd ./frontend
-    npm i
+* [PEP8](https://www.python.org/dev/peps/pep-0008/)

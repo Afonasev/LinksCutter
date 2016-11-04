@@ -1,32 +1,21 @@
-# LinksCutter
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Afonasev/LinksCutter/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Afonasev/LinksCutter.svg?branch=master)](https://travis-ci.org/Afonasev/LinksCutter)
-[![Coverage Status](https://coveralls.io/repos/github/Afonasev/LinksCutter/badge.svg?branch=master)](https://coveralls.io/github/Afonasev/LinksCutter?branch=master)
-
-## Backend
+# LinksCutter - Frontend
 
 ### Installing deps
 
-    pip install -r requirements.txt
+    npm i
 
-### Running debug server
+### Running build demon
 
-    python manage.py run
+    npm run watch
 
 ### Running the testsuite
 
-The minimal requirement for running the testsuite is ``pytest``.  You can
-install it with:
+    npm run test
 
-    pip install pytest
+### Code linting
 
-Then you can run the testsuite with:
+    npm run lint
 
-    py.test
+### Code Style
 
-## Frontend
-
-### Installing deps
-
-    cd ./frontend
-    npm i
+* [Airbnb](https://github.com/airbnb/javascript)
