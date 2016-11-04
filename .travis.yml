@@ -1,11 +1,15 @@
+sudo: required
+dist: xenial
+
 language:
   - python
+  - nodejs
 
 python:
   - "3.5"
 
 node_js:
-  - "6"
+  - "7"
 
 script:
   - sh ./backend/scripts/travis.sh
