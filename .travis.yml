@@ -3,14 +3,10 @@ dist: xenial
 
 language:
   - python
-  - nodejs
 
 python:
   - "3.5"
 
-node_js:
-  - "7"
-
 script:
-  - sh ./backend/scripts/travis.sh
-  - sh ./frontend/scripts/travis.sh
+  - sh ./backend/travis.sh
+  - sh ./frontend/travis.sh

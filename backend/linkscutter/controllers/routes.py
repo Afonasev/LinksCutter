@@ -46,12 +46,12 @@ def add_link():
     ))
 
 
-if settings.DEBUG:
-    # nginx in production
-    @get('/')
-    def index():
-        return static_file('index.html', settings.STATIC_PATH)
+# nginx in production
+@get('/')
+def index():
+    return static_file('index.html', settings.STATIC_PATH)
 
-    @get(r'/static/<path:path>')
-    def static(path):
-        return static_file(path, settings.STATIC_PATH)
+
+@get(r'/static/<path:path>')
+def static(path):
+    return static_file(path, settings.STATIC_PATH)

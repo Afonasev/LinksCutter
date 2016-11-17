@@ -10,4 +10,3 @@ pytest==3.0.3
 pytest-cov==2.4.0
 -e git+https://github.com/Afonasev/Migrator@v0.1#egg=migrator
 WebTest==2.0.23
-Faker==0.7.3
