@@ -7,7 +7,7 @@
 
 ### Running debug server
 
-    python manage.py runserver
+    python wsgi.py
 
 ### Running the testsuite
 

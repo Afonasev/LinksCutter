@@ -4,7 +4,7 @@ Application specific layer
 
 from . import settings
 from .domain import ILinkRepository, IRandomKeyProvider, Link, LinkService
-from .utils import fill_fake_links, random_str
+from .utils import random_str
 
 
 class LinkRepository(ILinkRepository):
@@ -42,9 +42,6 @@ class RandomKeyProvider(IRandomKeyProvider):
 
 def link_service_factory():
     repository = LinkRepository()
-
-    if settings.DEBUG:
-        fill_fake_links(repository, 100)
 
     return LinkService(
         repository=repository,

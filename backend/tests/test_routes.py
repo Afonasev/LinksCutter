@@ -2,8 +2,9 @@ from unittest import TestCase, mock
 
 from webtest import AppError, TestApp
 
+from wsgi import app  # noqa
 from linkscutter.domain import Link  # noqa
-from linkscutter.controllers import wsgi, schemas, services  # noqa
+from linkscutter.controllers import schemas, services  # noqa
 
 
 link_service_get_method = services.link_service.get
@@ -12,7 +13,7 @@ link_service_get_method = services.link_service.get
 class APITestCase(TestCase):
 
     def setUp(self):
-        self.app = TestApp(wsgi.init())
+        self.app = TestApp(app)
 
 
 class GetSchemaTestCase(APITestCase):
