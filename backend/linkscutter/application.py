@@ -47,3 +47,14 @@ def serialize_link(link: Link) -> dict:
 
 def deserialize_link(link: dict) -> Link:
     return Link(**link)
+
+
+def with_service(service_factory):
+    def decorator(func):
+        def wrap(*args, **kw):
+            return func(service_factory(), *args, **kw)
+        return wrap
+    return decorator
+
+
+with_link_service = with_service(link_service_factory)

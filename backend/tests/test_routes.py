@@ -1,12 +1,11 @@
-from unittest import TestCase, mock
+from unittest import TestCase
 
 from webtest import AppError, TestApp
 
-from linkscutter.controllers import schemas, services  # noqa
+from linkscutter.application import link_service_factory  # noqa
+from linkscutter.controllers import schemas  # noqa
 from linkscutter.domain import Link  # noqa
 from wsgi import app  # noqa
-
-link_service_get_method = services.link_service.get
 
 
 class APITestCase(TestCase):
@@ -37,27 +36,22 @@ class RedirectToUrlTestCase(APITestCase):
     GET /<key:str>
     """
 
+    def setUp(self):
+        super().setUp()
+        self.link_service = link_service_factory()
+
     def test_normal_redirect(self):
-        test_link = 'http://www.test.com'
+        test_url = 'http://www.test.com'
         test_key = 'test_key'
 
-        services.link_service.get = mock.MagicMock(
-            return_value=Link(
-                url=test_link,
-                key=test_key,
-            ),
-        )
-
+        self.link_service._repository.save(Link(url=test_url, key=test_key))
         response = self.app.get('/' + test_key)
+
         assert response.status_code == 302
-        assert response.location == 'http://www.test.com'
+        assert response.location == test_url
 
     def test_link_not_exists(self):
         test_key = 'test_key'
-
-        services.link_service.get = mock.MagicMock(
-            side_effect=KeyError,
-        )
 
         with self.assertRaisesRegex(AppError, r'404'):
             self.app.get('/' + test_key)
