@@ -30,7 +30,8 @@ class LinkRepository(ILinkRepository):
     def find(self, page: int, size: int, **kw) -> Link:
         to_index = page * size
         from_index = to_index - size
-        return list(self._links.values())[from_index:to_index]
+        links = sorted(list(self._links.values()), key=lambda x: x.created_at)
+        return links[from_index:to_index]
 
 
 def link_service_factory():
