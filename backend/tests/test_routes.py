@@ -2,10 +2,9 @@ from unittest import TestCase, mock
 
 from webtest import AppError, TestApp
 
-from wsgi import app  # noqa
-from linkscutter.domain import Link  # noqa
 from linkscutter.controllers import schemas, services  # noqa
-
+from linkscutter.domain import Link  # noqa
+from wsgi import app  # noqa
 
 link_service_get_method = services.link_service.get
 

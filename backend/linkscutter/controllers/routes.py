@@ -1,9 +1,9 @@
 from bottle import abort, get, post, redirect, request, static_file
 
+from linkscutter import settings
+from linkscutter.application import deserialize_link, serialize_link
 from . import schemas
 from .services import link_service
-from .. import settings
-from ..application import deserialize_link, serialize_link
 
 
 @get(r'/<key:re:[\d\w]+>')

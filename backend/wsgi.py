@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from bottle import default_app
+
 from linkscutter import settings
 from linkscutter.controllers import hooks, middlewares, routes  # noqa pylint: disable=unused-variable
 
