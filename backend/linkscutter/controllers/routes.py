@@ -6,13 +6,25 @@ from linkscutter.application import deserialize_link, serialize_link
 from . import schemas
 
 
+def abort_on_exc(exc, code):
+    def decorator(func):
+        def wrap(*args, **kw):
+            try:
+                return func(*args, **kw)
+            except exc:
+                abort(code)
+        return wrap
+    return decorator
+
+
+handle_key_error = abort_on_exc(KeyError, 404)
+
+
 @get(r'/<key:re:[\d\w]+>')
+@handle_key_error
 @with_link_service
 def redirect_to_url(link_service, key):
-    try:
-        redirect(link_service.get(key=key).full_url)
-    except KeyError:
-        abort(404)
+    redirect(link_service.get(key=key).full_url)
 
 
 @get('/api')
@@ -35,6 +47,7 @@ def get_links(link_service):
 
 
 @get('/api/v1/links/<key>')
+@handle_key_error
 @with_link_service
 def get_link(link_service, key):
     return serialize_link(
