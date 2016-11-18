@@ -4,6 +4,9 @@ Domain specific layer
 
 import datetime as dt
 
+from . import settings
+from .utils import random_str
+
 
 class Link:
 
@@ -43,25 +46,14 @@ class ILinkRepository:
         raise NotImplementedError
 
 
-class IRandomKeyProvider:
-
-    def next(self) -> str:
-        raise NotImplementedError
-
-
 class LinkService:
 
-    def __init__(
-        self,
-        repository: ILinkRepository,
-        key_provider: IRandomKeyProvider,
-    ):
+    def __init__(self, repository: ILinkRepository):
         self._repository = repository
-        self._key_provider = key_provider
         self._links_count = repository.count()
 
     def create(self, link: Link) -> Link:
-        link.key = self._key_provider.next()
+        link.key = random_str(settings.MIN_KEY_LENGHT)
         link.created_at = dt.datetime.utcnow()
         self._repository.save(link)
         self._links_count += 1

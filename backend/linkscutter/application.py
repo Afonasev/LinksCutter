@@ -3,8 +3,7 @@ Application specific layer
 """
 
 from . import settings
-from .domain import ILinkRepository, IRandomKeyProvider, Link, LinkService
-from .utils import random_str
+from .domain import ILinkRepository, Link, LinkService
 
 
 class LinkRepository(ILinkRepository):
@@ -34,19 +33,8 @@ class LinkRepository(ILinkRepository):
         return list(self._links.values())[from_index:to_index]
 
 
-class RandomKeyProvider(IRandomKeyProvider):
-
-    def next(self) -> str:
-        return random_str(settings.MIN_KEY_LENGHT)
-
-
 def link_service_factory():
-    repository = LinkRepository()
-
-    return LinkService(
-        repository=repository,
-        key_provider=RandomKeyProvider(),
-    )
+    return LinkService(repository=LinkRepository())
 
 
 def serialize_link(link: Link) -> dict:
