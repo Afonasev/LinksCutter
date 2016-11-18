@@ -1,13 +1,14 @@
 from bottle import abort, get, post, redirect, request, static_file
 
 from linkscutter import settings
+from linkscutter.application import with_link_service
 from linkscutter.application import deserialize_link, serialize_link
 from . import schemas
-from .services import link_service
 
 
 @get(r'/<key:re:[\d\w]+>')
-def redirect_to_url(key):
+@with_link_service
+def redirect_to_url(link_service, key):
     try:
         redirect(link_service.get(key=key).full_url)
     except KeyError:
@@ -21,7 +22,8 @@ def get_schema():
 
 
 @get('/api/v1/links')
-def get_links():
+@with_link_service
+def get_links(link_service):
     params = dict(request.params)
     for param in ('page', 'size'):
         if param in params:
@@ -33,14 +35,16 @@ def get_links():
 
 
 @get('/api/v1/links/<key>')
-def get_link(key):
+@with_link_service
+def get_link(link_service, key):
     return serialize_link(
         link_service.get(key=key),
     )
 
 
 @post('/api/v1/links')
-def add_link():
+@with_link_service
+def add_link(link_service):
     return serialize_link(link_service.create(
         deserialize_link(request.json),
     ))
