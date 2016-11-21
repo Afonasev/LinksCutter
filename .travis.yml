@@ -2,11 +2,6 @@ sudo: required
 
 dist: xenial
 
-addons:
-  apt:
-    packages:
-      - sshpass
-
 branches:
   only:
     - master
