@@ -12,3 +12,5 @@ if ["$TRAVIS_EVENT_TYPE" != "pull_request"]; then
     apt-get install sshpass
     sshpass -e ssh root@138.68.65.124 -t supervisorctl restart linkscutter
 fi
+
+echo "$TRAVIS_EVENT_TYPE";
