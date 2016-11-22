@@ -6,6 +6,10 @@ branches:
   only:
     - master
 
+addons:
+  ssh_known_hosts:
+  - 138.68.65.124
+
 language:
   - python
 
