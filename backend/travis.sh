@@ -10,6 +10,6 @@ push="pull_request"
 
 if [ "$TRAVIS_EVENT_TYPE" = "$push" ]; then
     coveralls
-    sudo apt-get -y -qq install sshpass
+    sudo apt-get update && sudo apt-get --reinstall install -qq sshpass
     sshpass -e ssh root@138.68.65.124 -t supervisorctl restart linkscutter
 fi
