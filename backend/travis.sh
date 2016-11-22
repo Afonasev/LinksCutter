@@ -6,7 +6,7 @@ py.test --cov=./linkscutter
 flake8
 pylint linkscutter
 
-push="pull_request"
+push="push"
 
 if [ "$TRAVIS_EVENT_TYPE" = "$push" ]; then
     coveralls
