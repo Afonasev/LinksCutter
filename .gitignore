@@ -67,3 +67,5 @@ frontend/build/
 # Migrator
 .migrator
 migrations/
+
+*.sqlite3

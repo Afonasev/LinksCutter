@@ -2,40 +2,82 @@
 Application specific layer
 """
 
+import sqlite3
+
 from . import settings
-from .domain import ILinkRepository, Link, LinkService
+from . import domain
 
 
-class LinkRepository(ILinkRepository):
+class Link(domain.Link):
 
-    """
-    Basic inmemory ILinkRepository implementation
-    """
+    @property
+    def full_url(self):
+        url = self.url
+        if not url.startswith('http'):
+            url = 'http://' + url
+        return url
 
-    _links = {}
+
+def connection_factory():
+    connection = sqlite3.connect(
+        settings.DATABASE,
+        detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES,
+        check_same_thread=False,
+    )
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+class LinkRepository(domain.IRepository):
+
+    def __init__(self, connection):
+        self._connection = connection
 
     def count(self) -> int:
-        return len(self._links)
+        return self._execute('SELECT count(*) FROM links')[0][0]
 
-    def save(self, link: Link):
-        self._links[link.key] = link
+    def save(self, link: Link) -> Link:
+        if link.pk is None:
+            link.pk = self._execute_insert(
+                '''
+                INSERT INTO links (url, key, created_at)
+                VALUES (?, ?, ?)
+                ''',
+                (link.url, link.key, link.created_at),
+            )
+        else:
+            self._execute(
+                '''
+                UPDATE links SET url = ?, key = ?, created_at = ? WHERE pk = ?
+                ''',
+                (link.url, link.key, link.created_at, link.pk),
+            )
         return link
 
-    def remove(self, link: Link):
-        self._links.pop(link.key)
+    def get(self, key, **kw) -> Link:
+        rows = self._execute('SELECT * FROM links WHERE key = ?', (key, ))
+        if not rows:
+            raise KeyError(key)
+        return Link(**rows[0])
 
-    def get(self, **kw) -> Link:
-        return self._links[kw['key']]
+    def find(self, page: int, size: int, **kw) -> [Link]:
+        query = 'SELECT * FROM links ORDER BY pk LIMIT ? OFFSET ?'
+        rows = self._execute(query, (size, size * (page - 1)))
+        return [Link(**r) for r in rows]
 
-    def find(self, page: int, size: int, **kw) -> Link:
-        to_index = page * size
-        from_index = to_index - size
-        links = sorted(list(self._links.values()), key=lambda x: x.created_at)
-        return links[from_index:to_index]
+    def _execute(self, query, params=tuple()):
+        with self._connection:
+            return self._connection.execute(query, params).fetchall()
+
+    def _execute_insert(self, query, params=tuple()):
+        with self._connection:
+            return self._connection.execute(query, params).lastrowid
 
 
 def link_service_factory():
-    return LinkService(repository=LinkRepository())
+    db_connection = connection_factory()
+    repository = LinkRepository(db_connection)
+    return domain.LinkService(repository)
 
 
 def serialize_link(link: Link) -> dict:

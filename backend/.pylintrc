@@ -166,7 +166,7 @@ expected-line-ending-format=
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,k,ex,Run,_,v,f,n
+good-names=i,j,k,ex,Run,_,v,f,n,pk
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata
@@ -391,7 +391,7 @@ max-parents=5
 max-attributes=7
 
 # Minimum number of public methods for a class (see R0903).
-min-public-methods=1
+min-public-methods=0
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=5

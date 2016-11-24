@@ -8,44 +8,43 @@ from . import settings
 from .utils import random_str
 
 
-class Link:
+class Entity:
+    pass
+
+
+class Link(Entity):
 
     def __init__(
-        self, url: str=None, key: str=None, created_at: dt.datetime=None,
+        self,
+        pk: int=None,
+        url: str=None,
+        key: str=None,
+        created_at: dt.datetime=None,
     ):
+        self.pk = pk
         self.url = url
         self.key = key
         self.created_at = created_at
 
-    @property
-    def full_url(self):
-        url = self.url
-        if not url.startswith('http'):
-            url = 'http://' + url
-        return url
 
-
-class ILinkRepository:
+class IRepository:
 
     def count(self) -> int:
         raise NotImplementedError
 
-    def save(self, link: Link):
+    def save(self, entity: Entity) -> Entity:
         raise NotImplementedError
 
-    def remove(self, link: Link):
+    def get(self, **kw) -> Entity:
         raise NotImplementedError
 
-    def get(self, key: str) -> Link:
-        raise NotImplementedError
-
-    def find(self, page: int, size: int, **kw) -> Link:
+    def find(self, page: int, size: int, **kw) -> [Entity]:
         raise NotImplementedError
 
 
 class LinkService:
 
-    def __init__(self, repository: ILinkRepository):
+    def __init__(self, repository: IRepository):
         self._repository = repository
 
     def create(self, link: Link) -> Link:
