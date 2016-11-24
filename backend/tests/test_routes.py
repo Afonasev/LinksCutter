@@ -1,7 +1,10 @@
+import os
 from unittest import TestCase
 
+from migrator.application import migrator_factory
 from webtest import AppError, TestApp
 
+from linkscutter import settings  # noqa
 from linkscutter.application import link_service_factory  # noqa
 from linkscutter.controllers import schemas  # noqa
 from linkscutter.domain import Link  # noqa
@@ -11,11 +14,14 @@ from wsgi import app  # noqa
 class APITestCase(TestCase):
 
     def setUp(self):
+        settings.DATABASE = '.test.db'
+        migrator_factory(state_path='.test_migrator_state').apply(None)
         self.app = TestApp(app)
         self.link_service = link_service_factory()
 
     def tearDown(self):
-        self.link_service._repository._links.clear()
+        os.remove('.test_migrator_state')
+        os.remove('.test.db')
 
 
 class RedirectToUrlTestCase(APITestCase):
