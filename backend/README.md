@@ -5,6 +5,9 @@
 
     pip install -r requirements.txt
 
+### Migrations applying
+    python -m migrator apply
+
 ### Running debug server
 
     python wsgi.py

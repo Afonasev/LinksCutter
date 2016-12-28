@@ -1,3 +1,7 @@
+"""
+Integration tests for web service
+"""
+
 import os
 from unittest import TestCase
 
