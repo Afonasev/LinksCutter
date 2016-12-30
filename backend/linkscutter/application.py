@@ -4,8 +4,7 @@ Application specific layer
 
 import sqlite3
 
-from . import settings
-from . import domain
+from . import domain, settings
 
 
 class Link(domain.Link):
