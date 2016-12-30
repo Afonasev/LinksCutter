@@ -1,8 +1,9 @@
 from bottle import abort, get, post, redirect, request, static_file
 
 from linkscutter import settings
-from linkscutter.application import with_link_service
-from linkscutter.application import deserialize_link, serialize_link
+from linkscutter.application import deserialize_link, \
+    serialize_link, with_link_service
+
 from . import schemas
 
 

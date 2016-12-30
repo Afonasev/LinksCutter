@@ -8,11 +8,11 @@ from unittest import TestCase
 from migrator.application import migrator_factory
 from webtest import AppError, TestApp
 
-from wsgi import app
 from linkscutter import settings
 from linkscutter.application import link_service_factory
 from linkscutter.controllers import schemas
 from linkscutter.domain import Link
+from wsgi import app
 
 
 class APITestCase(TestCase):
