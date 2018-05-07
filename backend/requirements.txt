@@ -10,4 +10,4 @@ pylint==1.6.4
 pytest==3.0.3
 pytest-cov==2.4.0
 -e git+https://github.com/Afonasev/Migrator@v0.2#egg=migrator
-WebTest==2.0.23
+WebTest==2.0.29
